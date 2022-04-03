@@ -19,51 +19,124 @@ class BookViewModel:
 
         for i in range(self.__n):
             if self.__bookList[i].genre not in self.__genres:
-                self.__genres.append(self.)
-            # if bookData[i][6] not in states:
-            #   states.append(bookData[i][6])
+                self.__genres.append(self.__bookList[i].genre)
+            # if books[i][6] not in states:
+            #   states.append(books[i][6])
             if self.__bookList[i].publisher not in self.__publishers:
-                self.__publishers.append(self.__bookList.publishers)
+                self.__publishers.append(self.__bookList[i].publisher)
             if self.__bookList[i].author not in self.__authors:
-                self.__authors.append(self.__bookList.author)
+                self.__authors.append(self.__bookList[i].author)
 
-        @property
-        def bookList(self):
-            return self.__bookList
+    @property
+    def bookList(self):
+        return self.__bookList
 
-        @bookList.setter
-        def bookData(self, bookList):
-            self.__bookList = bookList
+    @bookList.setter
+    def books(self, bookList):
+        self.__bookList = bookList
 
-        @property
-        def genres(self):
-            return self.__genres
+    @property
+    def genres(self):
+        return self.__genres
 
-        @genres.setter
-        def genres(self, genres):
-            self.__genres = genres
+    @genres.setter
+    def genres(self, genres):
+        self.__genres = genres
 
-        @property
-        def states(self):
-            return self.__states
+    @property
+    def states(self):
+        return self.__states
 
-        @states.setter
-        def states(self, states):
-            self.__states = states
+    @states.setter
+    def states(self, states):
+        self.__states = states
 
-        @property
-        def authors(self):
-            return self.__authors
+    @property
+    def authors(self):
+        return self.__authors
 
-        @authors.setter
-        def authors(self, authors):
-            self.__authors = authors
+    @authors.setter
+    def authors(self, authors):
+        self.__authors = authors
 
-        @property
-        def publishers(self):
-            return self.__publishers
+    @property
+    def publishers(self):
+        return self.__publishers
 
-        @publishers.setter
-        def publishers(self, publishers):
-            self.__publishers = publishers
+    @publishers.setter
+    def publishers(self, publishers):
+        self.__publishers = publishers
 
+    def stringOfBooks(self):
+        listOfString = []
+        books = self.__bookList
+        n = books.__len__()
+
+        for i in range(n):
+            stringGen = []
+            stringGen.append(books[i].title)
+            stringGen.append(books[i].author)
+            stringGen.append(books[i].isbn)
+            stringGen.append(books[i].genre)
+            stringGen.append(books[i].publisher)
+            # print(books[i].publisher)
+            stringGen.append(books[i].inventoryNumber)
+            stringGen.append(books[i].state)
+            listOfString.append(stringGen)
+
+        return listOfString
+    
+    def sortedListOfStrings(self,sortStates):
+        listOfString = []
+        sortedbooks=[]
+        books = self.__bookList
+        for i in range (self.__n):
+            if ((books[i].genre == sortStates[0] or sortStates[0] == 'genre') and
+                    (books[i].state == sortStates[1] or sortStates[1] == 'status') and
+                    (books[i].publisher == sortStates[2] or sortStates[2] == 'publisher') and
+                    (books[i].author == sortStates[3] or sortStates[3] == 'author')):
+                sortedbooks.append(books[i])
+
+        for i in sortedbooks:
+            stringGen = []
+            stringGen.append(i.title)
+            stringGen.append(i.author)
+            stringGen.append(i.isbn)
+            stringGen.append(i.genre)
+            stringGen.append(i.publisher)
+            # print(books[i].publisher)
+            stringGen.append(i.inventoryNumber)
+            stringGen.append(i.state)
+            listOfString.append(stringGen)
+
+        return listOfString
+
+    def nameSortedListOfStrings(self,name):
+        sortedBookData1=[]
+        books = self.__bookList
+        listOfString = []
+
+        for i in books:
+            if i.title.lower() == name.lower() or name=="":
+                sortedBookData1.append(i)
+
+        for i in sortedBookData1:
+            stringGen = []
+            stringGen.append(i.title)
+            stringGen.append(i.author)
+            stringGen.append(i.isbn)
+            stringGen.append(i.genre)
+            stringGen.append(i.publisher)
+            # print(books[i].publisher)
+            stringGen.append(i.inventoryNumber)
+            stringGen.append(i.state)
+            listOfString.append(stringGen)
+
+        return listOfString
+
+
+#bookVM= BookViewModel()
+#list=bookVM.stringOfBooks()
+
+#for l in list:
+#    print(l)
