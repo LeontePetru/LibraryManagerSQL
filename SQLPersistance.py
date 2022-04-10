@@ -1,6 +1,6 @@
 import mysql.connector
 from Books import Book
-from Users import User
+from Users import LoggedUser
 
 #Singleton class
 class SQLPersist:
@@ -94,7 +94,7 @@ class UserSQLPersist(SQLPersist):
 
     userList = []
     mycursor = self.getInstance().mydb.cursor()
-    sql_select_Query = "SELECT * FROM bookstoreschema.booktable;"
+    sql_select_Query = "SELECT * FROM bookstoreschema.usertable;"
     mycursor.execute(sql_select_Query)
     records = mycursor.fetchall()
     #n=mycursor.rowcount
@@ -102,7 +102,20 @@ class UserSQLPersist(SQLPersist):
       username=row[0]
       password=row[1]
       role=row[2]
-      book=Book(username,password,role)
+      book=LoggedUser(username,password,role)
       userList.append(book)
 
     return userList
+
+  def saveUser(self, user):
+    mycursor = self.getInstance().mydb.cursor()
+    mycursor.execute("INSERT INTO `bookstoreschema`.`usertable` (`username`, `password`, `role`)"
+                     " VALUES ('"+user.username+"', '"+user.password+"', '"+user.role+"');")
+    self.getInstance().mydb.commit()
+
+  def delete(self, username):
+    mycursor = self.getInstance().mydb.cursor()
+    updateCommand = "DELETE FROM `bookstoreschema`.`usertable` WHERE (`username` = '" + username + "');"
+    mycursor.execute(updateCommand)
+    self.getInstance().mydb.commit()
+

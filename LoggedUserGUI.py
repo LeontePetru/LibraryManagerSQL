@@ -3,10 +3,10 @@ import tkinter as tk
 from tkinter import ttk, CENTER
 from tkinter.messagebox import showinfo
 from BookVM import BookViewModel
-#from JSONPersistence import LoggedUserPersistance
+from UserVM import UserViewModel
 import tkinter.font as tkFont
-#from UsersbookVM import UserbookVM
 from tkinter import messagebox as mb
+
 
 root = tk.Tk()
 root.geometry('1280x720')
@@ -22,8 +22,8 @@ bookVM= BookViewModel()
 bookData=bookVM.stringOfBooks()
 n=bookData.__len__()
 
-#userbookVM = UserbookVM()
-#userData=userbookVM.stringOfUsers()
+userVM = UserViewModel()
+userData=userVM.stringOfUsers()
 
 
 genres = bookVM.genres
@@ -145,30 +145,30 @@ def insertUpdate():
 
 def getUser():
     pass
-    #user1=userbookVM.searchByUsername(UsernameEntry.get())
-    #RoleEntry.delete(0,"end")
-    #RoleEntry.insert(0,user1.role)
+    user1=userVM.searchByUsername(UsernameEntry.get())
+    RoleEntry.delete(0,"end")
+    RoleEntry.insert(0,user1.role)
 
 def deleteUser():
     pass
-    #user1=userbookVM.searchByUsername(UsernameEntry.get())
-    #if  user1 != False:
-     #   if (user1.role=="keeper" or user1.role=="admin") and role=="-k":
-      #      mb.showerror("Error", "Can not change an admin or a bookeeper")
-       #     return
+    user1=userVM.searchByUsername(UsernameEntry.get())
+    if  user1 != False:
+        if (user1.role=="keeper" or user1.role=="admin") and role=="-k":
+            mb.showerror("Error", "Can not change an admin or a bookeeper")
+            return
 
-    #userbookVM.deleteByUsername(UsernameEntry.get())
-    #userbookVM.__init__()
-    #createUsersTable(userbookVM.stringOfUsers())
+    userVM.deleteByUsername(UsernameEntry.get())
+    userVM.__init__()
+    createUsersTable(userVM.stringOfUsers())
 
 def insertUpdateUser():
     pass
-    #userbookVM.insertUpdateUser(UsernameEntry.get(),PasswordEntry.get(),RoleEntry.get())
-    #userbookVM.__init__()
-    #createUsersTable(userbookVM.stringOfUsers())
+    #userVM.insertUpdateUser(UsernameEntry.get(),PasswordEntry.get(),RoleEntry.get())
+    #userVM.__init__()
+    #createUsersTable(userVM.stringOfUsers())
 
 #def bookReport():
- #   userbookVM.usersPers.file("")
+ #   userVM.usersPers.file("")
 
 
 borrowButton=tk.Button(font=(12),text="Borrow Book",command=borrow,foreground="#ff6366",bg="#cccccc")
@@ -336,7 +336,7 @@ def createUsersTable(usersData):
     tv1.pack()
 
 createBookTable(bookVM.stringOfBooks())
-#createUsersTable(userbookVM.stringOfUsers())
+createUsersTable(userVM.stringOfUsers())
 
 root.mainloop()
 
