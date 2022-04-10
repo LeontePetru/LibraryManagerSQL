@@ -162,10 +162,9 @@ def deleteUser():
     createUsersTable(userVM.stringOfUsers())
 
 def insertUpdateUser():
-    pass
-    #userVM.insertUpdateUser(UsernameEntry.get(),PasswordEntry.get(),RoleEntry.get())
-    #userVM.__init__()
-    #createUsersTable(userVM.stringOfUsers())
+    userVM.insertUpdateUser(UsernameEntry.get(),PasswordEntry.get(),RoleEntry.get())
+    userVM.__init__()
+    createUsersTable(userVM.stringOfUsers())
 
 #def bookReport():
  #   userVM.usersPers.file("")

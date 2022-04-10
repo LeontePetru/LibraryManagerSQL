@@ -50,12 +50,11 @@ class UserViewModel:
     def deleteByUsername(self,username):
         self.__userPersistance.delete(username)
 
-    #def insertUpdateUser(self,username,password,role):
-     #   user1=LoggedUser(username,password,role)
-      #  self.deleteByUsername(username)
-       # pers=self.usersPers
-        #pers.insertUser(user1)
-    #
+    def insertUpdateUser(self,username,password,role):
+        user1=LoggedUser(username,password,role)
+        self.__userPersistance.delete(username)
+        self.__userPersistance.saveUser(user1)
+
 
 
 userVM=UserViewModel()
