@@ -55,6 +55,7 @@ class UserViewModel:
       #  self.deleteByUsername(username)
        # pers=self.usersPers
         #pers.insertUser(user1)
+    #
 
 
 userVM=UserViewModel()
