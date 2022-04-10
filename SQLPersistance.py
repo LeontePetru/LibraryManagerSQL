@@ -1,14 +1,29 @@
 import mysql.connector
 from Books import Book
+from Users import User
 
+#Singleton class
 class SQLPersist:
+  __instance = None
+  __mydb= None
 
   def __init__(self):
-    self.__mydb = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password="root"
-    )
+    if SQLPersist.__instance != None:
+      print("This class is a singleton!")
+    else:
+      self.__mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root"
+      )
+      SQLPersist.__instance=self
+
+  @staticmethod
+  def getInstance():
+    """ Static access method. """
+    if SQLPersist.__instance == None:
+      SQLPersist()
+    return SQLPersist.__instance
 
   @property
   def mydb(self):
@@ -24,18 +39,19 @@ class BookSQLPersist(SQLPersist):
     super().__init__()
 
 
+
   def saveBook(self,book):
-    mycursor = self.mydb.cursor()
-    print("INSERT INTO `bookstoreschema`.`booktable` (`title`, `author`, `isbn`, `genre`, `publisher`, `inventoryNumber`, `state`) "
-                     "VALUES ('"+book.title+"', '"+book.author+"', '"+book.isbn+"', '"+book.genre+"', '"+book.publisher+"', '"+book.inventoryNumber+"', '"+book.state+"')")
+    mycursor = self.getInstance().mydb.cursor()
+    #print("INSERT INTO `bookstoreschema`.`booktable` (`title`, `author`, `isbn`, `genre`, `publisher`, `inventoryNumber`, `state`) "
+     #                "VALUES ('"+book.title+"', '"+book.author+"', '"+book.isbn+"', '"+book.genre+"', '"+book.publisher+"', '"+book.inventoryNumber+"', '"+book.state+"')")
     mycursor.execute("INSERT INTO `bookstoreschema`.`booktable` (`title`, `author`, `isbn`, `genre`, `publisher`, `inventoryNumber`, `state`) "
                      "VALUES ('"+book.title+"', '"+book.author+"', '"+book.isbn+"', '"+book.genre+"', '"+book.publisher+"', '"+book.inventoryNumber+"', '"+book.state+"')")
-    self.mydb.commit()
+    self.getInstance().mydb.commit()
 
   def read(self):
 
     bookList = []
-    mycursor = self.mydb.cursor()
+    mycursor = self.getInstance().mydb.cursor()
     sql_select_Query = "SELECT * FROM bookstoreschema.booktable;"
     mycursor.execute(sql_select_Query)
     records = mycursor.fetchall()
@@ -53,12 +69,40 @@ class BookSQLPersist(SQLPersist):
 
     return bookList
 
-#bsql=BookSQLPersist()
-#book=Book("Padurea","Rebreanu","445-234","Drama","P45","25","borrowed")
-#list=bsql.read()
-#for l in list:
- # print(l.__dict__)
+  def update(self,book):
+    mycursor = self.getInstance().mydb.cursor()
+    updateCommand="UPDATE `bookstoreschema`.`booktable` SET `title` = '"+book.title+"', `author` = '"+book.author+"', " \
+                  "`isbn` = '"+book.isbn+"', `genre` = '"+book.genre+"', `publisher` = '"+book.publisher+"', " \
+                  "`state` = '"+book.state+"' WHERE (`inventoryNumber` = '"+book.inventoryNumber+"');"
+    mycursor.execute(updateCommand);
+    self.getInstance().mydb.commit()
 
-#print(mydb)
+  def delete(self,invNumber):
+    mycursor = self.getInstance().mydb.cursor()
+    updateCommand="DELETE FROM `bookstoreschema`.`booktable` WHERE (`inventoryNumber` = '"+invNumber+"');"
+    mycursor.execute(updateCommand)
+    self.getInstance().mydb.commit()
 
 
+
+class UserSQLPersist(SQLPersist):
+
+  def __init__(self):
+    super().__init__()
+
+  def read(self):
+
+    userList = []
+    mycursor = self.getInstance().mydb.cursor()
+    sql_select_Query = "SELECT * FROM bookstoreschema.booktable;"
+    mycursor.execute(sql_select_Query)
+    records = mycursor.fetchall()
+    #n=mycursor.rowcount
+    for row in records:
+      username=row[0]
+      password=row[1]
+      role=row[2]
+      book=Book(username,password,role)
+      userList.append(book)
+
+    return userList

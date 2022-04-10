@@ -5,7 +5,7 @@ from tkinter.messagebox import showinfo
 from BookVM import BookViewModel
 #from JSONPersistence import LoggedUserPersistance
 import tkinter.font as tkFont
-#from UsersPresenter import UserPresenter
+#from UsersbookVM import UserbookVM
 from tkinter import messagebox as mb
 
 root = tk.Tk()
@@ -18,18 +18,18 @@ role=sys.argv[1]
 getRole="user"
 
 
-presenter= BookViewModel()
-bookData=presenter.stringOfBooks()
+bookVM= BookViewModel()
+bookData=bookVM.stringOfBooks()
 n=bookData.__len__()
 
-#userPresenter = UserPresenter()
-#userData=userPresenter.stringOfUsers()
+#userbookVM = UserbookVM()
+#userData=userbookVM.stringOfUsers()
 
 
-genres = presenter.genres
-states = presenter.states
-publishers = presenter.publishers
-authors = presenter.authors
+genres = bookVM.genres
+states = bookVM.states
+publishers = bookVM.publishers
+authors = bookVM.authors
 
 font = tkFont.Font(family="Times New Roman",size=12,weight="bold")
 
@@ -66,10 +66,10 @@ def sortButtonFunc():
     sortParameters.append(sortPublishers)
     sortAuthors = selectAuthors.get()
     sortParameters.append(sortAuthors)
-    createBookTable(presenter.sortedListOfStrings(sortParameters))
+    createBookTable(bookVM.sortedListOfStrings(sortParameters))
 
 def searchByTitle():
-    createBookTable(presenter.nameSortedListOfStrings(titleEntry.get()))
+    createBookTable(bookVM.nameSortedListOfStrings(titleEntry.get()))
 
 sortButton=tk.Button(font=(12),text="Sort by",command=sortButtonFunc,foreground="#ff6366",bg="#cccccc")
 sortButton.place(relx=0.025,rely=0.44,relheight=0.04,relwidth=0.125)
@@ -106,22 +106,22 @@ returnUserEntry=tk.Entry(bg="#cccccc",font=font,fg="#ff6366")
 returnUserEntry.place(relx=0.58, rely=0.55, relheight=0.035, relwidth=0.1)
 
 def borrow():
-    presenter.borrow(borrowNumberEntry.get())
-    presenter.__init__()
+    bookVM.borrow(borrowNumberEntry.get())
+    bookVM.__init__()
     sortButtonFunc()
 
 def returnBook():
-    presenter.returnBook(returnNumberEntry.get())
-    presenter.__init__()
+    bookVM.returnBook(returnNumberEntry.get())
+    bookVM.__init__()
     sortButtonFunc()
 
 def deleteBook():
-    presenter.deleteBook(DeleteGetEntry.get())
-    presenter.__init__()
+    bookVM.deleteBook(DeleteGetEntry.get())
+    bookVM.__init__()
     sortButtonFunc()
 
 def getBook():
-    book=presenter.getBook(DeleteGetEntry.get())
+    book=bookVM.searchByNumber(DeleteGetEntry.get())
     TitleEntry2.delete(0,"end")
     TitleEntry2.insert(0,book.title)
     AuthorEntry.delete(0, "end")
@@ -138,37 +138,37 @@ def getBook():
     StatusEntry.insert(0, book.state)
 
 def insertUpdate():
-    presenter.insertUpdate(TitleEntry2.get(),AuthorEntry.get(),ISBNEntry.get(),GenreEntry.get(),
+    bookVM.insertUpdate(TitleEntry2.get(),AuthorEntry.get(),ISBNEntry.get(),GenreEntry.get(),
                            PublisherEntry.get(),InvNoEntry.get(),StatusEntry.get())
-    presenter.__init__()
+    bookVM.__init__()
     sortButtonFunc()
 
 def getUser():
     pass
-    #user1=userPresenter.searchByUsername(UsernameEntry.get())
+    #user1=userbookVM.searchByUsername(UsernameEntry.get())
     #RoleEntry.delete(0,"end")
     #RoleEntry.insert(0,user1.role)
 
 def deleteUser():
     pass
-    #user1=userPresenter.searchByUsername(UsernameEntry.get())
+    #user1=userbookVM.searchByUsername(UsernameEntry.get())
     #if  user1 != False:
      #   if (user1.role=="keeper" or user1.role=="admin") and role=="-k":
       #      mb.showerror("Error", "Can not change an admin or a bookeeper")
        #     return
 
-    #userPresenter.deleteByUsername(UsernameEntry.get())
-    #userPresenter.__init__()
-    #createUsersTable(userPresenter.stringOfUsers())
+    #userbookVM.deleteByUsername(UsernameEntry.get())
+    #userbookVM.__init__()
+    #createUsersTable(userbookVM.stringOfUsers())
 
 def insertUpdateUser():
     pass
-    #userPresenter.insertUpdateUser(UsernameEntry.get(),PasswordEntry.get(),RoleEntry.get())
-    #userPresenter.__init__()
-    #createUsersTable(userPresenter.stringOfUsers())
+    #userbookVM.insertUpdateUser(UsernameEntry.get(),PasswordEntry.get(),RoleEntry.get())
+    #userbookVM.__init__()
+    #createUsersTable(userbookVM.stringOfUsers())
 
 #def bookReport():
- #   userPresenter.usersPers.file("")
+ #   userbookVM.usersPers.file("")
 
 
 borrowButton=tk.Button(font=(12),text="Borrow Book",command=borrow,foreground="#ff6366",bg="#cccccc")
@@ -335,8 +335,8 @@ def createUsersTable(usersData):
         tv1.insert(parent='',index=index,iid=index,values=(index,userData[i][0],userData[i][2]))
     tv1.pack()
 
-createBookTable(presenter.stringOfBooks())
-#createUsersTable(userPresenter.stringOfUsers())
+createBookTable(bookVM.stringOfBooks())
+#createUsersTable(userbookVM.stringOfUsers())
 
 root.mainloop()
 

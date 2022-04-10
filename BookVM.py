@@ -1,4 +1,5 @@
 from SQLPersistance import BookSQLPersist
+from Books import Book
 
 class BookViewModel:
     def __init__(self):
@@ -134,6 +135,31 @@ class BookViewModel:
 
         return listOfString
 
+    def searchByNumber(self,invNumber):
+        books = self.__bookList
+        for i in books:
+            if i.inventoryNumber==invNumber:
+                return i;
+        return False
+
+    def borrow(self,invNumber):
+        book=self.searchByNumber(invNumber)
+        book.state="borrowed"
+        self.__bookPersist.update(book)
+
+    def returnBook(self,invNumber):
+        book = self.searchByNumber(invNumber)
+        book.state = "available"
+        self.__bookPersist.update(book)
+
+    def insertUpdate(self,title,author,isbn,genre,publisher,invNumber,status):
+        book1=Book(title,author,isbn,genre,publisher,invNumber,status)
+        self.__bookPersist.delete(invNumber);
+        self.__bookPersist.saveBook(book1)
+
+    def deleteBook(self,invNumber):
+        self.__bookPersist.delete(invNumber);
+        #self.__bookInventory.bookPersistence.saveBook(book1)
 
 #bookVM= BookViewModel()
 #list=bookVM.stringOfBooks()
