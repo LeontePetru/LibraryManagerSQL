@@ -161,6 +161,20 @@ class BookViewModel:
         self.__bookPersist.delete(invNumber);
         #self.__bookInventory.bookPersistence.saveBook(book1)
 
+    def bookNumbers(self):
+        books = self.__bookList
+
+        borrowed=0
+        available=0
+        for b in books:
+            if b.state=="borrowed":
+                borrowed=borrowed+1
+            else:
+                available=available+1
+
+        return [available,borrowed]
+
+
 #bookVM= BookViewModel()
 #list=bookVM.stringOfBooks()
 

@@ -6,6 +6,8 @@ from BookVM import BookViewModel
 from UserVM import UserViewModel
 import tkinter.font as tkFont
 from tkinter import messagebox as mb
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 root = tk.Tk()
@@ -166,6 +168,19 @@ def insertUpdateUser():
     userVM.__init__()
     createUsersTable(userVM.stringOfUsers())
 
+def bookReportFunc():
+    height = bookVM.bookNumbers()
+    bars = ('Available','Borrowed')
+    y_pos = np.arange(len(bars))
+
+    # Create bars
+    plt.bar(y_pos, height)
+
+    # Create names on the x-axis
+    plt.xticks(y_pos, bars)
+
+    # Show graphic
+    plt.show()
 #def bookReport():
  #   userVM.usersPers.file("")
 
@@ -263,7 +278,7 @@ InsertUpdateButton=tk.Button(font=(12),text="Insert User / Update User",command=
 InsertUpdateButton.place(relx=0.2,rely=0.81,relheight=0.035,relwidth=0.18)
 
 
-BookReport=tk.Button(font=(12),text="Book Report",command=insertUpdateUser,foreground="#ff6366",bg="#cccccc")
+BookReport=tk.Button(font=(12),text="Book Report",command=bookReportFunc,foreground="#ff6366",bg="#cccccc")
 BookReport.place(relx=0.2,rely=0.86,relheight=0.035,relwidth=0.18)
 
 def createBookTable(data):
